@@ -7,11 +7,13 @@ from gamelib import Sprite, GameApp, Text
 
 from consts import *
 
+
 class SlowFruit(Sprite):
     def __init__(self, app, x, y):
         super().__init__(app, 'images/apple.png', x, y)
 
         self.app = app
+        self.name = 'slow'
 
     def update(self):
         self.y += FRUIT_SLOW_SPEED
@@ -25,6 +27,7 @@ class FastFruit(Sprite):
         super().__init__(app, 'images/banana.png', x, y)
 
         self.app = app
+        self.name = 'fast'
 
     def update(self):
         self.y += FRUIT_FAST_SPEED
@@ -38,6 +41,7 @@ class SlideFruit(Sprite):
         super().__init__(app, 'images/cherry.png', x, y)
 
         self.app = app
+        self.name = 'slide'
         self.direction = randint(0,1)*2 - 1
 
     def update(self):
@@ -53,6 +57,7 @@ class CurvyFruit(Sprite):
         super().__init__(app, 'images/pear.png', x, y)
 
         self.app = app
+        self.name = 'curvy'
         self.t = randint(0,360) * 2 * math.pi / 360
 
     def update(self):
@@ -80,10 +85,26 @@ class Basket(Sprite):
                 self.x += BASKET_SPEED
 
     def check_collision(self, fruit):
-        if self.distance_to(fruit) <= BASKET_CATCH_DISTANCE:
-            fruit.to_be_deleted = True
-            self.app.score += 1
-            self.app.update_score()
+        if fruit.name =='slow':
+            if self.distance_to(fruit) <= BASKET_CATCH_DISTANCE:
+                fruit.to_be_deleted = True
+                self.app.score += 1
+                self.app.update_score()
+        elif fruit.name =='curvy':
+            if self.distance_to(fruit) <= BASKET_CATCH_DISTANCE:
+                fruit.to_be_deleted = True
+                self.app.score += 4
+                self.app.update_score()
+        elif fruit.name =='slide':
+            if self.distance_to(fruit) <= BASKET_CATCH_DISTANCE:
+                fruit.to_be_deleted = True
+                self.app.score += 3
+                self.app.update_score()
+        elif fruit.name == 'fast':
+            if self.distance_to(fruit) <= BASKET_CATCH_DISTANCE:
+                fruit.to_be_deleted = True
+                self.app.score += 2
+                self.app.update_score()
 
 
 class BasketGame(GameApp):
